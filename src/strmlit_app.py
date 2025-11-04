@@ -3,6 +3,7 @@ import requests
 
 # URL de ton API Flask (en local ou déployée)
 API_URL = "http://localhost:8000/chat"  # Remplace par l'URL de ton Web App après déploiement
+#http://localhost:8501
 
 st.title("Chatbot RAG avec Azure Cognitive Search + OpenAI")
 

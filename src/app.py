@@ -53,16 +53,28 @@ def generate_answer(context, question):
 # Endpoint API pour le chatbot
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.json
-    question = data.get("question", "")
-    
-    # Étape 1 : Recherche dans Cognitive Search
-    search_results = search_documents(question)
-    context = " ".join([doc.get('content', '') for doc in search_results.get('value', [])])
-    
-    # Étape 2 : Génération de la réponse
-    answer = generate_answer(context, question)
-    return jsonify({"answer": answer['choices'][0]['message']['content']})
+    try:
+        data = request.json
+        question = data.get("question", "")
+
+        # Étape 1 : Recherche dans Cognitive Search
+        search_results = search_documents(question)
+        context = " ".join([doc.get('content', '') for doc in search_results.get('value', [])])
+
+        # Vérifie si la recherche renvoie du contenu
+        if not context.strip():
+            return jsonify({"answer": "Aucun document trouvé dans l'index Azure Cognitive Search."}), 200
+
+        # Étape 2 : Génération de la réponse
+        answer = generate_answer(context, question)
+        return jsonify({"answer": answer['choices'][0]['message']['content']})
+
+    except requests.exceptions.HTTPError as e:
+        print("Erreur HTTP Azure :", e.response.text)
+        return jsonify({"error": f"Erreur Azure API : {e.response.text}"}), 500
+    except Exception as e:
+        print("Erreur interne :", str(e))
+        return jsonify({"error": f"Erreur interne : {str(e)}"}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
