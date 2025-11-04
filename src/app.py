@@ -33,7 +33,7 @@ def search_documents(query):
 
 # Fonction pour générer une réponse avec Azure OpenAI
 def generate_answer(context, question):
-    url = f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/gpt-4/chat/completions?api-version=2023-07-01-preview"
+    url = f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/gpt-5-mini/chat/completions?api-version=2023-07-01-preview"
     headers = {
         "Content-Type": "application/json",
         "api-key": AZURE_OPENAI_KEY
