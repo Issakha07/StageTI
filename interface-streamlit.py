@@ -3,18 +3,19 @@ import requests
 
 # URL de ton API Flask (en local ou déployée)
 API_URL = "http://localhost:8000/chat"  # Remplace par l'URL de ton Web App après déploiement
-#http://localhost:8501
 
 st.title("Chatbot RAG avec Azure Cognitive Search + OpenAI")
 
-# Champ de saisie pour la question
-question = st.text_input("Posez votre question :", "")
+# --- ✅ Formulaire pour permettre la validation avec Entrée ---
+with st.form("chat_form", clear_on_submit=False):
+    question = st.text_input("Posez votre question :", "")
+    submitted = st.form_submit_button("Envoyer")
 
-if st.button("Envoyer"):
+# --- Si l’utilisateur appuie sur Entrée ou clique sur Envoyer ---
+if submitted:
     if question.strip() == "":
         st.warning("Veuillez entrer une question.")
     else:
-        # Appel à l'API Flask
         try:
             response = requests.post(API_URL, json={"question": question})
             if response.status_code == 200:
