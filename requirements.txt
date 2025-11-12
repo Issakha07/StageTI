@@ -1,4 +1,21 @@
-flask
-requests
+#flask
+#requests
+#python-dotenv
+#streamlit
+#langdetect
+
+#-------------------------
+
+# Backend FastAPI
+fastapi
+uvicorn
+pydantic
 python-dotenv
+requests
+langdetect
+
+# Frontend Streamlit
 streamlit
+
+# Optionnel mais recommandé
+python-multipart
